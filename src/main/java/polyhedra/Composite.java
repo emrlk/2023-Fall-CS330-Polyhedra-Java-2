@@ -1,9 +1,9 @@
 package polyhedra;
 
-import java.util.Scanner;
-import java.util.List;
-import java.util.Vector;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Scanner;
+import java.util.Vector;
 
 /**
  * A Composite Polyhedron. Polyhedra of this type are built from
@@ -43,7 +43,11 @@ public class Composite extends Polyhedron
         super("Composite");
 
         allPolyhedra = new Vector<Polyhedron>();
-
+        for(Polyhedron p : src.allPolyhedra){
+            allPolyhedra.add(p.clone());
+        }
+    
+        boundingBox = src.getBoundingBox();
     }
 
     /**
@@ -55,7 +59,8 @@ public class Composite extends Polyhedron
      */
     public void add(Polyhedron toAdd)
     {
-
+        allPolyhedra.add(toAdd.clone());
+        this.boundingBox.merge(toAdd.getBoundingBox());
     }
 
     /**
@@ -67,7 +72,13 @@ public class Composite extends Polyhedron
      */
     public void read(Scanner scanner)
     {
+        int numPolyhedra = scanner.nextInt();
 
+        for (int i = 0; i < numPolyhedra; i++) {
+            Polyhedron poly = PolyhedronFactory.createAndRead(scanner);
+            this.allPolyhedra.add(poly);
+            boundingBox.merge(poly.getBoundingBox());
+        }
     }
 
     /**
@@ -80,7 +91,10 @@ public class Composite extends Polyhedron
      */
     public void scale(double scalingFactor)
     {
-
+        for(Polyhedron p : allPolyhedra){
+            p.scale(scalingFactor);
+        }
+        boundingBox.scale(scalingFactor);
     }
 
     /**
@@ -115,8 +129,14 @@ public class Composite extends Polyhedron
     @Override
     public String toString()
     {
+        StringBuilder bld = new StringBuilder();
+        bld.append(super.toString());
+        bld.append(this.size() + " polyhedra" + "\n");
+        for (Polyhedron poly : this.allPolyhedra) {
+            bld.append("  " + poly.toString() + "\n");
+        }
 
-        return "Composite.toString not implemented";
+        return bld.toString();
     }
 }
 

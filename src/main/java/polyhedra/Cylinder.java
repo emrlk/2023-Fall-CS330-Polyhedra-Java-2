@@ -128,6 +128,6 @@ public class Cylinder extends Polyhedron {
         
         return String.format(super.toString())
              + "Radius: " + this.getRadius()
-             + "Height: " + this.getHeight();
+             + " Height: " + this.getHeight();
     }
 }

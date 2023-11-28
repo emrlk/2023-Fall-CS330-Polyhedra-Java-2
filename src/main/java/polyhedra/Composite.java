@@ -46,8 +46,8 @@ public class Composite extends Polyhedron
         for(Polyhedron p : src.allPolyhedra){
             allPolyhedra.add(p.clone());
         }
-    
-        boundingBox = src.getBoundingBox();
+        
+        boundingBox.merge(src.getBoundingBox());
     }
 
     /**
